@@ -1,0 +1,74 @@
+create database OteProject;
+
+show database;
+
+use OteProject;
+
+create table Properties (
+    property_id int primary key auto_increment, 
+    property_type varchar(50),
+    address varchar(50),
+    city varchar(50),
+    zip_code int,
+    size_sq_ft int,
+    num_rooms int,
+    features text,
+    availability_status enum('available', 'sold', 'rented'),
+    price decimal(10, 2),
+    agent_id int,
+    foreign key (agent_id) references Agents(agent_id)
+);
+
+
+
+create table Clients (
+    client_id int primary key auto_increment,
+    client_type enum('buyer', 'seller', 'renter', 'landlord'),
+    name varchar(50),
+    phone varchar(50),
+    email varchar(50),
+    address varchar(50),
+    preferred_location varchar(50),
+    preferred_property_type varchar(50),
+    budget_range_min decimal(10, 2),
+    budget_range_max decimal(10, 2),
+    interaction_notes text
+);
+
+
+
+create table Agents (
+    agent_id int primary key auto_increment,
+    name varchar(100),
+    phone varchar(20),
+    email varchar(100),
+    assigned_clients text,
+    assigned_properties text,
+    properties_sold int,
+    properties_rented int,
+    commission_rate decimal(5, 2)
+);
+
+
+
+create table Transactions (
+    transaction_id int primary key auto_increment,
+    transaction_type enum('sale', 'rental'),
+    property_id int,
+    client_id int,
+    agent_id int,
+    transaction_date date,
+    sale_price decimal(10, 2),
+    rental_fee decimal(10, 2),
+    commission_amount decimal(10, 2),
+    payment_schedule text,
+    transaction_status enum('in-progress', 'completed', 'canceled'),
+    foreign key (property_id) references Properties(property_id),
+    foreign key (client_id) references Clients(client_id),
+    foreign key (agent_id) references Agents(agent_id)
+);
+
+
+
+
+
